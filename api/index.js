@@ -18,9 +18,9 @@ const app = express();
 //   console.log(error);
 // }
 
-// (async () => {
-//   await dbei.sync();
-// })();
+// async () => {
+//   await dbei.sync({ alter: true });
+// })();(
 
 app.use(cors());
 app.use(cookieParser());
@@ -30,4 +30,8 @@ app.use(express.static("public"));
 app.use(AuthRoute);
 app.use(UserRoute);
 
-app.listen(5500, () => console.log("server up and running!"));
+app.listen(5500, async () => {
+  console.log("server up and running!");
+  // await dbei.sync({ alter: true, force: false });
+  // console.log("Database synced!");
+});
