@@ -10,38 +10,25 @@ const Discount = dbei.define(
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     ei_name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
         len: [3, 100],
       },
     },
-    ei_start_date: {
+    ei_start: {
       type: DataTypes.DATE,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_end_date: {
+    ei_end: {
       type: DataTypes.DATE,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     ei_discount_percent: {
       type: DataTypes.DECIMAL,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
   },
   {

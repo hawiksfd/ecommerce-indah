@@ -36,9 +36,13 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      ei_userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      ei_image_product: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      ei_url_img_product: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

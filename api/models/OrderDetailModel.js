@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import dbei from "./../config/dbei.js";
 import User from "./UserModel.js";
 import PaymentDetail from "./PaymentDetailModel.js";
+import Product from "./ProductModel.js";
 
 const { DataTypes } = Sequelize;
 
@@ -12,30 +13,22 @@ const OrderDetail = dbei.define(
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_userId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+    },
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     ei_total: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
+      allowNull: false,
     },
-    ei_paymentDetailId: {
+    paymentDetailId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
   },
   {
@@ -43,14 +36,19 @@ const OrderDetail = dbei.define(
   }
 );
 
+Product.hasMany(OrderDetail, {
+  foreignKey: "productId",
+});
+OrderDetail.belongsTo(Product);
+
 PaymentDetail.hasOne(OrderDetail);
 OrderDetail.belongsTo(PaymentDetail, {
   foreignKey: "paymentDetailId",
 });
 
-User.hasOne(OrderDetail);
-OrderDetail.belongsTo(User, {
+User.hasMany(OrderDetail, {
   foreignKey: "userId",
 });
+OrderDetail.belongsTo(User);
 
 export default OrderDetail;

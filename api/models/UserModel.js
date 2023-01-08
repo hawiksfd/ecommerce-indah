@@ -10,15 +10,11 @@ const User = dbei.define(
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     ei_username: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
         len: [7, 15],
       },
     },
@@ -26,7 +22,6 @@ const User = dbei.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
         len: [3, 100],
       },
     },
@@ -34,7 +29,6 @@ const User = dbei.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
         len: [3, 100],
       },
     },
@@ -42,23 +36,36 @@ const User = dbei.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
         isEmail: true,
       },
     },
     ei_password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     ei_hp: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+    },
+    ei_address: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    ei_kecamatan: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    ei_city: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    ei_province: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    ei_pcode: {
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     ei_image: {
       type: DataTypes.STRING,

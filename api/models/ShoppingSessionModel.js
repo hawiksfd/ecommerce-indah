@@ -11,23 +11,14 @@ const ShoppingSession = dbei.define(
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_userId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     ei_total: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
   },
   {

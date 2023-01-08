@@ -12,23 +12,14 @@ const OrderItem = dbei.define(
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_orderId: {
+    ei_orderDetailId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_productId: {
+    productId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
   },
   {

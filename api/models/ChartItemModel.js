@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import dbei from "./../config/dbei.js";
 import ShoppingSession from "./ShoppingSessionModel.js";
 import Product from "./ProductModel.js";
+import User from "./UserModel.js";
 
 const { DataTypes } = Sequelize;
 
@@ -12,30 +13,18 @@ const ChartItem = dbei.define(
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_sessionId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_productId: {
+    productId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_total: {
+    ei_qty: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
   },
   {
@@ -43,10 +32,14 @@ const ChartItem = dbei.define(
   }
 );
 
-ShoppingSession.hasMany(ChartItem);
-ChartItem.belongsTo(ShoppingSession, { foreignKey: "shoppingSessionId" });
+User.hasMany(ChartItem, { foreignKey: "userId" });
+ChartItem.belongsTo(User);
 
-Product.hasOne(ChartItem);
-ChartItem.belongsTo(Product, { foreignKey: "productId" });
+Product.hasOne(ChartItem, { foreignKey: "productId" });
+ChartItem.belongsTo(Product);
+
+// toJSON(){
+//   return { ...this.get(), id: undefined, userId: undefined,productId: undefined}
+// }
 
 export default ChartItem;

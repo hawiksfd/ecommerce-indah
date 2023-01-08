@@ -10,30 +10,18 @@ const PaymentDetail = dbei.define(
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     ei_amount: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     ei_provider: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
+      allowNull: false,
     },
     ei_status: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
   },
   {

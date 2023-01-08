@@ -12,15 +12,11 @@ const Product = dbei.define(
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     ei_name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
         len: [3, 100],
       },
     },
@@ -28,30 +24,24 @@ const Product = dbei.define(
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        notEmpty: true,
         len: [0, 1000],
       },
     },
     ei_price: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_discountId: {
+    discountId: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
     },
-    ei_userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+    ei_image_product: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    ei_url_img_product: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
@@ -59,7 +49,7 @@ const Product = dbei.define(
   }
 );
 
-Discount.hasMany(Product);
-Product.belongsTo(Discount, { foreignKey: "discountId" });
+Discount.hasMany(Product, { foreignKey: "discountId" });
+Product.belongsTo(Discount);
 
 export default Product;

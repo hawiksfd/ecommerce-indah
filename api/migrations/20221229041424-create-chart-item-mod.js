@@ -14,7 +14,7 @@ module.exports = {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
       },
-      ei_sessionId: {
+      ei_userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -22,7 +22,7 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      ei_total: {
+      ei_qty: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
