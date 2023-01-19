@@ -5,8 +5,20 @@ import fs from "fs";
 
 export const createUser = async (req, res) => {
   // destruct request body
-  let { username, firstname, lastname, email, password, confPassword, hp } =
-    req.body;
+  let {
+    username,
+    firstname,
+    lastname,
+    email,
+    password,
+    confPassword,
+    hp,
+    address,
+    kecamatan,
+    city,
+    province,
+    pcode,
+  } = req.body;
 
   //cek username
   let cekUname = await User.findAll({
@@ -41,6 +53,11 @@ export const createUser = async (req, res) => {
       ei_email: email,
       ei_password: hashPassword,
       ei_hp: hp,
+      ei_address: address,
+      ei_kecamatan: kecamatan,
+      ei_city: city,
+      ei_province: province,
+      ei_pcode: pcode,
     });
     res.status(201).json({ msg: "Akun Berhasil dibuat!" });
   } catch (error) {
@@ -53,9 +70,10 @@ export const updateUser = async (req, res) => {
 
   const user = await User.findOne({
     where: {
-      ei_uuid: req.params.id,
+      ei_uuid: req.params.uuid,
     },
   });
+
   if (!user) return res.status(404).json({ msg: "Akun tidak ditemukan!" });
 
   let fileName = "";
@@ -99,7 +117,7 @@ export const updateUser = async (req, res) => {
       },
       {
         where: {
-          ei_uuid: user.userId,
+          ei_uuid: user.uuid,
         },
       }
     );
@@ -110,18 +128,76 @@ export const updateUser = async (req, res) => {
   }
 };
 
+export const updateAddressUser = async (req, res) => {
+  // destruct request body
+  let { address, kecamatan, city, province, pcode } = req.body;
+
+  const user = await User.findOne({
+    where: {
+      ei_uuid: req.params.uuid,
+    },
+  });
+
+  if (!user) return res.status(404).json({ msg: "Akun tidak ditemukan!" });
+
+  try {
+    await user.update(
+      {
+        ei_address: address,
+        ei_kecamatan: kecamatan,
+        ei_city: city,
+        ei_province: province,
+        ei_pcode: pcode,
+      },
+      {
+        where: {
+          ei_uuid: req.params.uuid,
+        },
+      }
+    );
+    res.status(201).json({ msg: "Berhasil memperbarui akun!" });
+    // console.log(file);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export const getUsers = async (req, res) => {
   try {
     const response = await User.findAll({
       attributes: [
-        "ei_uuid",
-        "ei_username",
-        "ei_firstname",
-        "ei_lastname",
-        "ei_email",
-        "ei_hp",
-        "ei_image",
-        "ei_urlImg",
+        ["ei_uuid", "uuid"],
+        ["ei_username", "username"],
+        ["ei_firstname", "firstname"],
+        ["ei_lastname", "lastname"],
+        ["ei_email", "email"],
+        ["ei_hp", "hp"],
+        ["ei_image", "img"],
+        ["ei_urlImg", "url_img"],
+      ],
+    });
+    res.json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const getUserByUuid = async (req, res) => {
+  try {
+    const response = await User.findOne({
+      where: {
+        ei_uuid: req.params.uuid,
+      },
+      attributes: [
+        ["ei_uuid", "uuid"],
+        ["ei_username", "username"],
+        ["ei_firstname", "firstname"],
+        ["ei_lastname", "lastname"],
+        ["ei_email", "email"],
+        ["ei_hp", "hp"],
+        ["ei_address", "address"],
+        ["ei_image", "img"],
+        ["ei_urlImg", "url_img"],
       ],
     });
     res.json(response);
