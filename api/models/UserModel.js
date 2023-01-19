@@ -73,6 +73,11 @@ const User = dbei.define(
     ei_urlImg: {
       type: DataTypes.STRING,
     },
+    ei_role: {
+      type: DataTypes.ENUM("supreme", "member"),
+      defaultValue: "member",
+      allowNull: false,
+    },
     ei_refresh_token: {
       type: DataTypes.TEXT,
     },

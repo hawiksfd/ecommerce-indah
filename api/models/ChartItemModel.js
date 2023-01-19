@@ -32,10 +32,10 @@ const ChartItem = dbei.define(
   }
 );
 
-User.hasMany(ChartItem, { foreignKey: "userId" });
+User.hasMany(ChartItem, { foreignKey: "userid" });
 ChartItem.belongsTo(User);
 
-Product.hasOne(ChartItem, { foreignKey: "productId" });
+Product.hasMany(ChartItem, { foreignKey: "productid" });
 ChartItem.belongsTo(Product);
 
 // toJSON(){

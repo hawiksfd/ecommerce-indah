@@ -1,8 +1,6 @@
 import { Sequelize } from "sequelize";
 import dbei from "./../config/dbei.js";
-import User from "./UserModel.js";
-import PaymentDetail from "./PaymentDetailModel.js";
-import Product from "./ProductModel.js";
+import ChartItem from "./ChartItemModel.js";
 
 const { DataTypes } = Sequelize;
 
@@ -14,19 +12,15 @@ const OrderDetail = dbei.define(
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
     },
-    userId: {
+    chartItemId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    productId: {
+    ei_ship_cost: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
     ei_total: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    paymentDetailId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -36,19 +30,9 @@ const OrderDetail = dbei.define(
   }
 );
 
-Product.hasMany(OrderDetail, {
-  foreignKey: "productId",
+ChartItem.hasOne(OrderDetail, {
+  foreignKey: "chartItemId",
 });
-OrderDetail.belongsTo(Product);
-
-PaymentDetail.hasOne(OrderDetail);
-OrderDetail.belongsTo(PaymentDetail, {
-  foreignKey: "paymentDetailId",
-});
-
-User.hasMany(OrderDetail, {
-  foreignKey: "userId",
-});
-OrderDetail.belongsTo(User);
+OrderDetail.belongsTo(ChartItem);
 
 export default OrderDetail;
