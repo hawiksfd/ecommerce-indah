@@ -2,7 +2,7 @@ import { Op } from "sequelize";
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
-import session from "express-session";
+// import session from "express-session";
 
 export const Login = async (req, res) => {
   try {
@@ -14,6 +14,18 @@ export const Login = async (req, res) => {
           { ei_email: req.body.username },
         ],
       },
+      // attributes: [
+      //   ["ei_uuid", "uuid"],
+      //   ["ei_username", "username"],
+      //   ["ei_firstname", "firstname"],
+      //   ["ei_lastname", "lastname"],
+      //   ["ei_email", "email"],
+      //   ["ei_hp", "hp"],
+      //   ["ei_address", "address"],
+      //   ["ei_image", "img"],
+      //   ["ei_urlImg", "url_img"],
+      //   ["ei_role", "role"],
+      // ],
     });
 
     // cek user
@@ -24,7 +36,7 @@ export const Login = async (req, res) => {
     if (!match) return res.status(400).json({ msg: "Password anda salah!" });
 
     // constract field user
-    req.session.userId = user.ei_uuid;
+    // req.session.userId = user.ei_uuid;
     const userId = user.ei_uuid;
     const username = user.ei_username;
     const firstname = user.ei_firstname;
@@ -33,22 +45,23 @@ export const Login = async (req, res) => {
     const hp = user.ei_hp;
     const img = user.ei_image;
     const urlImg = user.ei_urlImg;
+    const role = user.ei_role;
 
     // membuat access token
     const accessToken = jsonwebtoken.sign(
-      { userId, username, firstname, lastname, email, hp, img, urlImg },
+      { userId, username, firstname, lastname, email, hp, img, urlImg, role },
       process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "1d",
+        expiresIn: "15s",
       }
     );
 
     // membuat refresh token
     const refreshToken = jsonwebtoken.sign(
-      { userId, username, firstname, lastname, email, hp, img, urlImg },
+      { userId, username, firstname, lastname, email, hp, img, urlImg, role },
       process.env.REFRESH_TOKEN_SECRET,
       {
-        expiresIn: "1d",
+        expiresIn: "10800s",
       }
     );
 
@@ -65,16 +78,14 @@ export const Login = async (req, res) => {
     // setting refresh token pada cookie
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 60 * 60 * 3 * 1000,
     });
 
-    // req.session.save((err) => {
-    //   if (err) return res.status(400).json({ msg: "Tidak dapat login!" }); //jika tidak dapat login
-    //   // res.status(200).json({ msg: "Anda telah login" }); // berhasil login
-    // });
-
     // kirim response ke client access token
-    res.json({ userId, accessToken });
+    res.status(201).json({
+      userId,
+      accessToken,
+    });
   } catch (error) {
     console.log(error);
     // res.status(404).json({ msg: "Akun anda tidak ditemukan!" });
@@ -109,15 +120,10 @@ export const Logout = async (req, res) => {
     );
     // hapus refresh token pada cookie
     res.clearCookie("refresh_token");
-    res.clearCookie("connect.sid");
-    // kirim response
-    // return res.sendStatus(200);
+    console.log("berhasil logout");
 
-    // clear session
-    req.session.destroy((err) => {
-      if (err) return res.status(400).json({ msg: "Tidak dapat logout!" }); //jika tidak dapat logout
-      res.status(200).json({ msg: "Anda telah Logout" }); // berhasil logout
-    });
+    // kirim response
+    return res.status(200).json({ msg: "Berhasil logout!" });
   } catch (error) {
     console.log(error);
   }
@@ -128,7 +134,8 @@ export const refreshToken = async (req, res) => {
     // ambil value token dari cookie
     const refreshToken = req.cookies.refresh_token;
     // validasi token
-    if (!refreshToken) return res.sendStatus(401); // 401 = unauthorization
+    if (!refreshToken)
+      return res.status(401).json({ msg: "eror 401 get refresh token!" }); // 401 = unauthorization
     // compare token dg token db
     const user = await User.findOne({
       where: {
@@ -136,7 +143,10 @@ export const refreshToken = async (req, res) => {
       },
     });
     // jika token tidak cocok
-    if (!user) return res.sendStatus(403); // 403 = forbidden
+    if (!user)
+      return res
+        .status(403)
+        .json({ msg: "eror 403 get refresh token no user!" }); // 403 = forbidden
     // jika token cocok
     jsonwebtoken.verify(
       refreshToken,
@@ -154,17 +164,28 @@ export const refreshToken = async (req, res) => {
         const hp = user.ei_hp;
         const img = user.ei_image;
         const urlImg = user.ei_urlImg;
+        const role = user.ei_role;
 
         // buat token baru
         const accessToken = jsonwebtoken.sign(
-          { userId, username, firstname, lastname, email, hp, img, urlImg },
+          {
+            userId,
+            username,
+            firstname,
+            lastname,
+            email,
+            hp,
+            img,
+            urlImg,
+            role,
+          },
           process.env.ACCESS_TOKEN_SECRET,
           {
             expiresIn: "15s",
           }
         );
         // kirim response ke user
-        res.json({ accessToken });
+        res.json({ userId, accessToken });
       }
     );
   } catch (error) {

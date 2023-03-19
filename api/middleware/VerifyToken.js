@@ -10,7 +10,8 @@ export const verifyToken = (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1];
 
   // validasi token
-  if (token == null) return res.sendStatus(401); // 401 = unauthorization
+  if (token == null)
+    return res.status(401).json({ msg: "eror unauthorization" }); // 401 = unauthorization
 
   // varify token
   jsonwebtoken.verify(
@@ -18,15 +19,13 @@ export const verifyToken = (req, res, next) => {
     process.env.ACCESS_TOKEN_SECRET,
     (err, decoded) => {
       // jika error
-      if (err) return res.sendStatus(403); // 403 = forbiden
+      if (err) return res.status(403).json({ msg: "eror forbidden" }); // 403 = forbidden
 
       // verify username
-      req.ei_email = decoded.ei_email;
-
-      // next();
+      req.userId = decoded.ei_uuid;
+      next();
     }
   );
-  next();
 };
 
 export const itsMe = async (req, res, next) => {

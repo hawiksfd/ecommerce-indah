@@ -198,6 +198,7 @@ export const getUserByUuid = async (req, res) => {
         ["ei_address", "address"],
         ["ei_image", "img"],
         ["ei_urlImg", "url_img"],
+        // ["ei_role", "role"],
       ],
     });
     res.json(response);

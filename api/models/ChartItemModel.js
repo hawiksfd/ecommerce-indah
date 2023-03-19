@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize";
 import dbei from "./../config/dbei.js";
-import ShoppingSession from "./ShoppingSessionModel.js";
 import Product from "./ProductModel.js";
 import User from "./UserModel.js";
 

@@ -86,6 +86,37 @@ export const getProducts = async (req, res) => {
   }
 };
 
+export const getProductsById = async (req, res) => {
+  try {
+    const response = await Product.findOne({
+      where: { ei_uuid: req.params.uid },
+      attributes: [
+        ["ei_uuid", "uuid"],
+        ["ei_name", "name"],
+        ["ei_desc", "desc"],
+        ["ei_price", "price"],
+        // ["discountId"],
+        ["ei_image_product", "img_prd"],
+        ["ei_url_img_product", "url_img_prd"],
+      ],
+      include: {
+        model: Discount,
+        attributes: [
+          ["ei_uuid", "uuid"],
+          ["ei_name", "name"],
+          ["ei_start", "start_date"],
+          ["ei_end", "end_date"],
+          // ["discountId"],
+          ["ei_discount_percent", "discount_percent"],
+        ],
+      },
+    });
+    res.json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export const discProduct = async (req, res) => {
   const { name, startDate, endDate, discPersen } = req.body;
 

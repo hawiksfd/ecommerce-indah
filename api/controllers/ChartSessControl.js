@@ -8,10 +8,10 @@ export const addProductToChart = async (req, res) => {
 
   try {
     const user = await User.findOne({
-      where: { ei_uuid: req.params.userUuid },
+      where: { ei_uuid: req.params.uid },
     });
     const product = await Product.findOne({
-      where: { ei_uuid: req.params.prdUuid },
+      where: { ei_uuid: req.params.prdid },
     });
 
     const addChart = await ChartItem.create({
@@ -78,7 +78,7 @@ export const getChartByUserUuid = async (req, res) => {
   try {
     const Chart = await User.findOne({
       where: {
-        ei_uuid: req.params.uuid,
+        ei_uuid: req.params.uid,
       },
       attributes: [
         ["ei_uuid", "uuid"],
@@ -177,3 +177,17 @@ export const getChartByUserId = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+export const deleteChartId = async (req, res) => {
+  try {
+    await ChartItem.destroy({
+      where: {
+        ei_uuid: req.params.cuid,
+      },
+    });
+    res.status(200).json("msg: berhasil menghapus chart product!");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
