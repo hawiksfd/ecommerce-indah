@@ -31,6 +31,9 @@ const Product = dbei.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    ei_quantity: {
+      type: DataTypes.INTEGER,
+    },
     discountId: {
       type: DataTypes.INTEGER,
       allowNull: true,
