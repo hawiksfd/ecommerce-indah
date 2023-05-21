@@ -3,6 +3,7 @@ import {
   createUser,
   getUsers,
   updateUser,
+  updateAvaUser,
   getUserByUuid,
   updateAddressUser,
 } from "./../controllers/UserControl.js";
@@ -15,8 +16,8 @@ import {
 const router = express.Router();
 
 router.post("/register", createUser);
-router.patch("/edit-user/:uuid", itsMe, verifyToken, updateUser);
-router.patch("/edit-address-user/:uuid", itsMe, verifyToken, updateAddressUser);
+router.patch("/edit-user/:uid", verifyToken, updateUser);
+router.patch("/edit-address-user/:uid", verifyToken, updateAddressUser);
 router.get("/get-users", verifySupreme, getUsers);
 router.get("/get-user/:uuid", verifyToken, getUserByUuid);
 

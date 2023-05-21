@@ -9,6 +9,7 @@ import ProductRoute from "./routes/ProductRoute.js";
 import ChartSessRoute from "./routes/ChartSessRoute.js";
 import OrderRoute from "./routes/OrderRoute.js";
 import PaymentRoute from "./routes/PaymentRoute.js";
+import OngkirRoute from "./routes/OngkirRoute.js";
 import fileUpload from "express-fileupload";
 import session from "express-session";
 import SequelizeStore from "connect-session-sequelize";
@@ -60,6 +61,7 @@ app.use(ProductRoute);
 app.use(ChartSessRoute);
 app.use(OrderRoute);
 app.use(PaymentRoute);
+app.use(OngkirRoute);
 
 app.listen(5500, async () => {
   console.log("server up and running!");
