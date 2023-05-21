@@ -17,8 +17,16 @@ const ChartItem = dbei.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    uuid_user: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     productId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    uuid_product: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     ei_qty: {
