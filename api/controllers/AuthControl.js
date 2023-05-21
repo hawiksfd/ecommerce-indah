@@ -129,7 +129,7 @@ export const Logout = async (req, res) => {
   }
 };
 
-export const refreshToken = async (req, res) => {
+export const refreshToken = async (req, res, next) => {
   try {
     // ambil value token dari cookie
     const refreshToken = req.cookies.refresh_token;
@@ -190,5 +190,6 @@ export const refreshToken = async (req, res) => {
     );
   } catch (error) {
     console.log(error);
+    // next();
   }
 };
